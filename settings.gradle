@@ -1,0 +1,31 @@
+pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            println("resolutionStrategy eachPlugin ${requested.id.namespace}")
+            if (requested.id.namespace == 'com.peak.plugin') {
+                useModule("com.peak.plugin:pluginlib:${requested.version}")
+            }
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        maven {
+            url = LOCAL_REPO_URL
+        }
+    }
+}
+dependencyResolutionManagement {
+    //repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+rootProject.name = "AndroidGradlePlugin"
+
+include ':app', ':myplugin'
+include ':pluginlib'

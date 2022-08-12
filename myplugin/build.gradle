@@ -1,0 +1,67 @@
+repositories {
+    jcenter()
+    google()
+    mavenCentral()
+}
+
+apply plugin: 'groovy'
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation gradleApi() //gradle sdk
+    implementation localGroovy() //groovy sdk
+}
+
+
+//发布到本地
+afterEvaluate {
+    publishing {
+        repositories {
+//            maven {
+//                allowInsecureProtocol true
+//                //上传到项目本地仓库
+//                url = LOCAL_REPO_URL
+////                credentials {
+////                    username = 'android'
+////                    password = 'g3OI7gB120onNo17kRIihWsd'
+////                }
+//            }
+            mavenLocal()//本地仓库地址 ，默认仓库：.m2\repository
+        }
+
+        publications {
+            release(MavenPublication) {
+                groupId = GROUP_ID //自定义 pom.groupId一般为包名
+                artifactId = ARTIFACTID //自定义 pom.artifactId 一般为项目名称
+                version = LIBRARY_VERSION //版本号
+                from components.java         //生成的类型，一定要制定类型
+            }
+        }
+
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+//指定源码/资源路径
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+//            srcDir 'src/main/kotlin'
+        }
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
